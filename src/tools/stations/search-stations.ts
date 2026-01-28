@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { searchLocations } from "../../services/db-api-services.js";
+import { formatStations } from "../../utils/formatters.js";
 
 export const searchStationTool = {
   name: "search_station",
@@ -9,12 +11,14 @@ export const searchStationTool = {
       .describe('Station name to search for (e.g., "München Hbf", "Berlin")'),
   }),
   execute: async ({ query }: { query: string }) => {
-    // TODO: Replace with API call
-    const mockResults = [
-      { name: "München Hauptbahnhof", id: "8000261", type: "station" },
-      { name: "München Ost", id: "8000262", type: "station" },
-    ];
-
-    return JSON.stringify(mockResults, null, 2);
+    try {
+      const results = await searchLocations(query);
+      return formatStations(results);
+    } catch (error) {
+      if (error instanceof Error) {
+        return `Error searching stations: ${error.message}`;
+      }
+      return "Unknown error";
+    }
   },
 };
