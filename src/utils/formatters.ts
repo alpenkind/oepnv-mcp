@@ -30,10 +30,11 @@ export function formatDepartures(departures: Departure[]): string {
         hour: "2-digit",
         minute: "2-digit",
       });
+      const cancelled = dep.cancelled ? " ❌ CANCELLED" : "";
       const delay = dep.delay ? ` (+${Math.floor(dep.delay / 60)}min)` : "";
       const platform = dep.platform ? ` | Platform ${dep.platform}` : "";
 
-      return `${index + 1}. ${dep.line.name} → ${dep.direction} - ${time}${delay}${platform}`;
+      return `${index + 1}. ${dep.line.name} → ${dep.direction} - ${time}${delay}${platform}${cancelled}`;
     })
     .join("\n");
 }
@@ -53,6 +54,7 @@ export function formatArrivals(arrivals: Arrival[]): string {
         hour: "2-digit",
         minute: "2-digit",
       });
+      const cancelled = arr.cancelled ? " ❌ CANCELLED" : "";
       const delay = arr.delay ? ` (+${Math.floor(arr.delay / 60)}min)` : "";
       const platform = arr.platform ? ` | Platform ${arr.platform}` : "";
       const from = arr.provenance ? ` von ${arr.provenance}` : "";

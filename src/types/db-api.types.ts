@@ -60,6 +60,7 @@ export interface Departure {
   plannedPlatform: string | null;
   direction: string;
   provenance: string | null;
+  cancelled?: boolean;
   line: {
     type: string;
     id: string;
@@ -117,6 +118,7 @@ export interface Arrival {
   plannedPlatform: string | null;
   direction: string | null;
   provenance: string | null;
+  cancelled?: boolean;
   line: {
     type: string;
     id: string;

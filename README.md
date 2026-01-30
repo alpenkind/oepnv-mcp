@@ -102,7 +102,3 @@ This server uses the [v6.db.transport API](https://v6.db.transport.rest/) (db-ve
 ## License
 
 MIT
-
-## Contributing
-
-Contributions welcome! Please open an issue or PR.
