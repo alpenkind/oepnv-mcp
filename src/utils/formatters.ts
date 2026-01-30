@@ -1,4 +1,3 @@
-import { array } from "zod/v3";
 import type { Location, Departure, Arrival } from "../types/index.js";
 
 /**
