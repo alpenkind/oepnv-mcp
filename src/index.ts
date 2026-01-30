@@ -1,7 +1,7 @@
 import { server } from "./server.js";
 
 async function main() {
-  // TODO: Change stdio to httpStream for Vercel deployment
+  // TODO: Change stdio to httpStream for  deployment
   const transportType = process.env.TRANSPORT_TYPE || "stdio";
 
   try {
