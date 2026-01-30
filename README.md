@@ -1,6 +1,6 @@
 # ÖPNV MCP Server
 
-A Model Context Protocol (MCP) server for German public transport information using the Deutsche Bahn API.
+A Model Context Protocol (MCP) server for German public transport information using the v6.db.transport.rest API.
 
 ## Features
 
@@ -97,7 +97,7 @@ npm start
 
 ## API
 
-This server uses the [Deutsche Bahn REST API](https://v6.db.transport.rest/) (v6.db.transport.rest).
+This server uses the [v6.db.transport API](https://v6.db.transport.rest/) (db-vendo-client as backend).
 
 ## License
 
