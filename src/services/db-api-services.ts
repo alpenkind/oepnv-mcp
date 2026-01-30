@@ -1,6 +1,6 @@
 import { fetch } from "undici";
 import { DB_API_BASE, API_LIMITS } from "../tools/config/constants.js";
-import type { Location, Departure } from "../types/index.js";
+import type { Location, Departure, Arrival } from "../types/index.js";
 
 /**
  * Search for locations (only stations, stops) by name
@@ -60,6 +60,38 @@ export async function getDepartures(
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Failed to get departures: ${error.message}`);
+    }
+    throw error;
+  }
+}
+
+/**
+ * Search for arrivals at a station
+ */
+
+export async function getArrivals(
+  stationId: string,
+  duration: number = 60,
+): Promise<Arrival[]> {
+  const url = `${DB_API_BASE}/stops/${encodeURIComponent(stationId)}/arrivals?duration=${duration}`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(
+        `DB API returned ${response.status}: ${response.statusText}`,
+      );
+    }
+
+    const data = (await response.json()) as { arrivals?: Arrival[] };
+
+    const arrivals = data.arrivals || [];
+
+    return Array.isArray(arrivals) ? arrivals : [];
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to get arrivals: ${error.message}`);
     }
     throw error;
   }
