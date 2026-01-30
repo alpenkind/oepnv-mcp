@@ -22,7 +22,7 @@ export const getDeparturesTool = {
       return formatDepartures(results);
     } catch (error) {
       if (error instanceof Error) {
-        return `Error searching stations: ${error.message}`;
+        return `Error getting departures: ${error.message}`;
       }
       return "Unknown error";
     }
