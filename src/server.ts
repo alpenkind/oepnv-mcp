@@ -18,7 +18,13 @@ Important guidelines:
 - Always highlight delays, cancellations, and platform changes
 - When showing connections, include transfer times and platform/stop info
 - Use station/stop IDs from search results for subsequent queries
-- DB API covers trains, regional buses, and local public transport`,
+- DB API covers trains, regional buses, and local public transport
+- Respond in the user's language 
+
+User interaction flow:
+- After showing journey results, ASK the user if they want details about a specific connection (e.g., "Connection #2")
+- Warn about tight connections (⚠️ TIGHT!) and suggest checking alternative routes
+- If delays are shown, proactively mention they might affect transfers`,
 });
 
 // Register tools

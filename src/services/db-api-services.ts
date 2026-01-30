@@ -1,6 +1,12 @@
 import { fetch } from "undici";
 import { DB_API_BASE, API_LIMITS } from "../tools/config/constants.js";
-import type { Location, Departure, Arrival } from "../types/index.js";
+import type {
+  Location,
+  Departure,
+  Arrival,
+  JourneysResponse,
+  Journey,
+} from "../types/index.js";
 
 /**
  * Search for locations (only stations, stops) by name
@@ -92,6 +98,38 @@ export async function getArrivals(
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Failed to get arrivals: ${error.message}`);
+    }
+    throw error;
+  }
+}
+
+/**
+ * Search for journeys between two stations
+ */
+
+export async function searchJourneys(
+  originId: string,
+  destinationId: string,
+  departureTime?: string,
+  results: number = 5,
+): Promise<JourneysResponse> {
+  const departure = departureTime || new Date().toISOString().slice(0, 16);
+  const url = `${DB_API_BASE}/journeys?from=${encodeURIComponent(originId)}&to=${encodeURIComponent(destinationId)}&departure=${encodeURIComponent(departure)}&results=${results}`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(
+        `DB API returned ${response.status}: ${response.statusText}`,
+      );
+    }
+
+    const data = (await response.json()) as JourneysResponse;
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to search journeys: ${error.message}`);
     }
     throw error;
   }
