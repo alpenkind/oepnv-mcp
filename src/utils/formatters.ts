@@ -1,4 +1,10 @@
-import type { Location, Departure, Arrival, Journey } from "../types/index.js";
+import type {
+  Location,
+  Departure,
+  Arrival,
+  Journey,
+  Disruption,
+} from "../types/index.js";
 
 /**
  * Format station search results
@@ -172,4 +178,33 @@ export function formatJourneys(journeys: Journey[]): string {
       return `${index + 1}. ${transfers}:\n${legs}`;
     })
     .join("\n\n");
+}
+
+/**
+ * Disruptions and warnings
+ */
+export function formatDisruptions(disruptions: Disruption[]): string {
+  if (disruptions.length === 0) {
+    return "✅ No disruptions or warnings found.";
+  }
+
+  const warnings = disruptions.filter((r) => r.type === "warning");
+  const hints = disruptions.filter(
+    (r) => r.type === "hint" || r.type === "status",
+  );
+
+  let result = "";
+
+  if (warnings.length > 0) {
+    result += " WARNINGS:\n";
+    result += warnings.map((w, i) => `${i + 1}. ${w.text}`).join("\n");
+  }
+
+  if (hints.length > 0) {
+    if (result) result += "\n\n";
+    result += "INFORMATION:\n";
+    result += hints.map((h, i) => `${i + 1}. ${h.text}`).join("\n");
+  }
+
+  return result;
 }

@@ -248,3 +248,30 @@ export interface JourneysResponse {
   laterRef?: string;
   journeys: Journey[];
 }
+
+// Remarks in API response:
+export interface Disruption {
+  type: string;
+  code?: string;
+  text: string;
+  summary?: string;
+  icon?: {
+    type: string;
+    title: string;
+  };
+  priority?: number;
+  products?: {
+    nationalExpress?: boolean;
+    national?: boolean;
+    regionalExpress?: boolean;
+    regional?: boolean;
+    suburban?: boolean;
+    subway?: boolean;
+    tram?: boolean;
+    bus?: boolean;
+  };
+  company?: string;
+  categories?: number[];
+  validFrom?: string;
+  validUntil?: string;
+}

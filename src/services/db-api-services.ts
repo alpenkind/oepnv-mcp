@@ -6,6 +6,7 @@ import type {
   Arrival,
   JourneysResponse,
   Journey,
+  Disruption,
 } from "../types/index.js";
 
 /**
@@ -130,6 +131,51 @@ export async function searchJourneys(
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Failed to search journeys: ${error.message}`);
+    }
+    throw error;
+  }
+}
+
+/**
+ * Get disruptions and warnings for a station
+ */
+export async function getDisruptions(stationId: string): Promise<Disruption[]> {
+  const url = `${DB_API_BASE}/stops/${encodeURIComponent(stationId)}/departures?duration=120`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(
+        `DB API returned ${response.status}: ${response.statusText}`,
+      );
+    }
+
+    const data = (await response.json()) as {
+      departures?: Departure[];
+      remarks?: Disruption[];
+    };
+
+    const disruptionsSet = new Map<string, Disruption>();
+
+    // Station
+    if (data.remarks) {
+      data.remarks.forEach((d) => disruptionsSet.set(d.text, d));
+    }
+
+    // Departure
+    if (data.departures) {
+      data.departures.forEach((dep) => {
+        if (dep.remarks) {
+          dep.remarks.forEach((d) => disruptionsSet.set(d.text, d));
+        }
+      });
+    }
+
+    return Array.from(disruptionsSet.values());
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to get disruptions: ${error.message}`);
     }
     throw error;
   }
